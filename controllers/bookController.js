@@ -56,8 +56,7 @@ export const updateBook = async (req, res) => {
 
 export const getAllBooks = async (req, res) => {
   const title = req.query.title || ".*";
-
-  let categories = req.query.categories || ".*";
+  let categories = req.query.categories || [];
   const author = req.query.author || ".*";
   const _results = [];
   await Book.find(
@@ -71,13 +70,13 @@ export const getAllBooks = async (req, res) => {
     .populate("categories", "title")
     .then((results) => {
       // console.log(typeof(results)+"\n"+ results)
-      // console.log(results);
+    //   console.log(results);
       if (results.length > 0) {
         if (!Array.isArray(categories)) {
           categories = [categories];
         }
-
-        if (categories.length >= 0) {
+     
+        if (categories.length > 0) {
           results.forEach((row) => {
             for (let index = 0; index < row.categories.length; index++) {
               if (categories.includes(row.categories[index].title)) {
@@ -95,7 +94,7 @@ export const getAllBooks = async (req, res) => {
           res.status(200).json(results);
         }
       } else {
-        res.status(400).json({ message: "Book not found" });
+        res.status(400).json({ message: "Book not found 1" });
       }
     })
     .catch((err) => {
