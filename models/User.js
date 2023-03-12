@@ -7,7 +7,6 @@ const options= {
 }
 
 const userSchema = new Schema({
- 
     password:{
         type:String,
         required:[true, "password required"]
@@ -16,7 +15,6 @@ const userSchema = new Schema({
         type:String,
         required:[true, "email required"],
         unique : [true, "email already in use"]
-
     },
     nom: {
         type:String,
