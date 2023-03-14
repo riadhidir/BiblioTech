@@ -11,6 +11,21 @@ const detailSchema = new Schema({
         type: SchemaTypes.ObjectId,
         ref: "Book"
     },
+    stat:{
+        type:String,
+        enum:["Returned","Reading"],
+        default : "Reading"
+    },
+    dueDate:{
+        type: Date,
+        default :  ()=>{
+            return new Date().getTime() + 1296000000;
+        }
+    },
+    renewed:{
+        type: Boolean,
+        default : false
+    }
     
 }, { timestamps: true });
 const Borow_detail = model("Borow_detail",detailSchema);

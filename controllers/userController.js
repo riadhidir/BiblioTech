@@ -21,10 +21,12 @@ export const Login = async (req, res)=>{
                  if(!match){
              res.status(400).json({error:"wrong username and password combination "});
             }else{
-
                 const accessToken = generateAccessToken(user);
-                
-                res.json({message:"logged in",accessToken });
+                res.cookie("access-token", accessToken,{
+                    maxAge: 604800000,
+                    httpOnly:true
+                })
+                res.json({message:"logged in"});
             }
             })
         }

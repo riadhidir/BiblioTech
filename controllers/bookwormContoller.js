@@ -2,7 +2,9 @@ import Bookworm from '../models/Bookworm.js';
 import Borow_detail from '../models/Borrow_detail.js';
 import Book from '../models/Book.js';
 import bcrypt from 'bcrypt';
-import { getUserId } from '../utilities/userUtilities.js';
+import {sendEmail} from "./emailController.js";
+
+
 export const register= async(req,res)=>{
     const {email,nom, prenom, phone, password} = req.body;
 
@@ -11,8 +13,17 @@ export const register= async(req,res)=>{
         bcrypt.hash(password, 10).then( async (password)=>{
             await Bookworm.create({
                 email,nom, prenom,phone, password
-            }).then(()=>{
+            }).then(async ()=>{
+                // const data=[];
+                const books  = await Book.find({},'-_id title').catch((err)=>{
+                    console.log(err, 'cant send email');
+                });
+                // books.forEach((book)=>{
+                //     data.push(book.title);
+                // })
+                await sendEmail(email, JSON.stringify(books)).catch(console.error);
                 res.json('Registered Successfully!');
+
             }).catch((err) => {
                 res.status(400).json({ error: err.errors })
             });
