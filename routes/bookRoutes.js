@@ -11,7 +11,7 @@ bookRoute.get('/',auth(['Employee','Bookworm']),getAllBooks);
 bookRoute.get('/:id', auth(['Employee','Bookworm']),getBook);
 bookRoute.post('/:id', [auth(['Bookworm']),checkAccess, bookLimitCheck, bookDuesCheck],borrowBook);
 bookRoute.put('/:id/return', auth(['Bookworm']),returnBook);
-bookRoute.put('/:id/renew', auth(['Bookworm']),renewBook);
+bookRoute.put('/:id/renew', [auth(['Bookworm']),checkAccess],renewBook);
 
 //comment section and reply
 
